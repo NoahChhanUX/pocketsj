@@ -56,7 +56,11 @@ const EventDetailPage = ({ event, onBack }) => {
         {/* Register Button */}
         <div className="mb-6">
           <a 
-            href="#" 
+            href={event.id === 1 ? "https://www.shfb.org/give-help/volunteer/volcalendar-general/?shift_id=a0vQo00000BnUGdIAN" : 
+                 event.id === 2 ? "https://www.sanjoseca.gov/your-government/departments-offices/parks-recreation-neighborhood-services/get-involved/neighborhood-litter-program#galpu" :
+                 "https://www.volunteermatch.org/search/org1150640.jsp"}
+            target="_blank"
+            rel="noopener noreferrer" 
             className="block bg-teal-700 text-white text-center py-3 px-4 rounded-full flex items-center justify-between"
           >
             <span className="text-lg font-medium ml-24">Register</span>

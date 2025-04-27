@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import Collection from './Collection';
 import EventDetailPage from './EventDetailPage';
 
 // If you don't have lucide-react installed, we'll use simple HTML/SVG elements instead
@@ -321,7 +322,7 @@ function App() {
     <div style={styles.container}>
       <div style={styles.phoneFrame}>
         <div style={styles.dynamicIsland}></div>
-        
+  
         <div style={styles.phoneScreen}>
           {/* Status bar */}
           <div style={styles.statusBar}>
@@ -331,102 +332,110 @@ function App() {
               <BatteryIcon />
             </div>
           </div>
-          
+  
+          {/* Main content */}
           {selectedEvent ? (
-            // Show event detail page if an event is selected
             <EventDetailPage event={selectedEvent} onBack={handleBackToEvents} />
           ) : (
-            // Show events list if no event is selected
             <>
-              {/* Search bar */}
-              <div style={styles.searchContainer}>
-                <div style={styles.searchBar}>
-                  <div style={{ marginLeft: '8px', marginRight: '8px', color: '#6b7280' }}>
-                    <MenuIcon />
-                  </div>
-                  <input 
-                    type="text" 
-                    placeholder="Opportunities near you..."
-                    style={styles.searchInput}
-                    readOnly
-                  />
-                  <div style={{ marginLeft: '8px', marginRight: '8px', color: '#6b7280' }}>
-                    <SearchIcon />
-                  </div>
-                </div>
-              </div>
-              
-              {/* Event list */}
-              <div style={styles.eventsList}>
-                {events.map((event) => (
-                  <div 
-                    key={event.id} 
-                    style={styles.eventCard}
-                    onClick={() => handleEventClick(event)}
-                  >
-                    <div style={styles.eventImageContainer}>
-                      <img 
-                        src={event.image} 
-                        alt={event.title} 
-                        style={styles.eventImage}
+              {/* Only show search bar and events if activeTab is 'events' */}
+              {activeTab === 'events' && (
+                <>
+                  {/* Search bar */}
+                  <div style={styles.searchContainer}>
+                    <div style={styles.searchBar}>
+                      <div style={{ marginLeft: '8px', marginRight: '8px', color: '#6b7280' }}>
+                        <MenuIcon />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Opportunities near you..."
+                        style={styles.searchInput}
+                        readOnly
                       />
-                      <div style={styles.statsContainer}>
-                        {event.stats.map((stat, index) => (
-                          <div 
-                            key={index} 
-                            style={styles.statBadge(stat.color)}
-                          >
-                            <span style={styles.statText}>{stat.percent}</span>
-                          </div>
-                        ))}
+                      <div style={{ marginLeft: '8px', marginRight: '8px', color: '#6b7280' }}>
+                        <SearchIcon />
                       </div>
                     </div>
-                    <div style={styles.eventContent}>
-                      <h3 style={styles.eventTitle}>{event.title}</h3>
-                      <p style={styles.eventDetails}>
-                        {event.date} · {event.timeStart} - {event.timeEnd} · {event.location}
-                      </p>
-                      <p style={styles.eventDescription}>{event.description}</p>
-                    </div>
                   </div>
-                ))}
-              </div>
-              
-              {/* Navigation bar */}
-              <div style={styles.navBar}>
-                <button 
-                  style={styles.navButton(activeTab === 'events')}
-                  onClick={() => setActiveTab('events')}
-                >
-                  <MapPinIcon />
-                  <span style={styles.navLabel}>Events</span>
-                </button>
-                <button 
-                  style={styles.navButton(activeTab === 'collection')}
-                  onClick={() => setActiveTab('collection')}
-                >
-                  <LayersIcon />
-                  <span style={styles.navLabel}>Collection</span>
-                </button>
-                <button 
-                  style={styles.navButton(activeTab === 'profile')}
-                  onClick={() => setActiveTab('profile')}
-                >
-                  <UserIcon />
-                  <span style={styles.navLabel}>Profile</span>
-                </button>
-              </div>
+  
+                  {/* Events list */}
+                  <div style={styles.eventsList}>
+                    {events.map((event) => (
+                      <div
+                        key={event.id}
+                        style={styles.eventCard}
+                        onClick={() => handleEventClick(event)}
+                      >
+                        <div style={styles.eventImageContainer}>
+                          <img
+                            src={event.image}
+                            alt={event.title}
+                            style={styles.eventImage}
+                          />
+                          <div style={styles.statsContainer}>
+                            {event.stats.map((stat, index) => (
+                              <div key={index} style={styles.statBadge(stat.color)}>
+                                <span style={styles.statText}>{stat.percent}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div style={styles.eventContent}>
+                          <h3 style={styles.eventTitle}>{event.title}</h3>
+                          <p style={styles.eventDetails}>
+                            {event.date} · {event.timeStart} - {event.timeEnd} · {event.location}
+                          </p>
+                          <p style={styles.eventDescription}>{event.description}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+  
+              {/* Only show Collection screen if activeTab is 'collection' */}
+              {activeTab === 'collection' && (
+                <Collection />
+              )}
+  
+              {/* Future: Profile screen would go here if needed */}
             </>
           )}
-          
-          {/* iPhone home indicator */}
+  
+          {/* Navigation bar */}
+          <div style={styles.navBar}>
+            <button
+              style={styles.navButton(activeTab === 'events')}
+              onClick={() => setActiveTab('events')}
+            >
+              <MapPinIcon />
+              <span style={styles.navLabel}>Events</span>
+            </button>
+            <button
+              style={styles.navButton(activeTab === 'collection')}
+              onClick={() => setActiveTab('collection')}
+            >
+              <LayersIcon />
+              <span style={styles.navLabel}>Collection</span>
+            </button>
+            <button
+              style={styles.navButton(activeTab === 'profile')}
+              onClick={() => setActiveTab('profile')}
+            >
+              <UserIcon />
+              <span style={styles.navLabel}>Profile</span>
+            </button>
+          </div>
+  
+          {/* Home indicator */}
           <div style={styles.homeIndicator}>
             <div style={styles.homeIndicatorBar}></div>
           </div>
         </div>
       </div>
     </div>
-  );
+  );  
 }
 
 export default App;
